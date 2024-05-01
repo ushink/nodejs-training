@@ -47,34 +47,15 @@ router.put(
   "/users/:id",
   (req: Request<paramsType, {}, userType>, res: Response) => {
     const { id: idParams } = req.params;
-    const user = users.find((user) => user.id === idParams);
-
-    const { name, isAdmin, age, experience } = req.body;
-
-    if (!user) {
-      return res.status(404).json({ message: "Пользователь не найден" });
-    }
-
-    // обновляем data user
-
-    if (name) {
-      user.name = req.body.name;
-    }
-
-    // проверяем именно на наличие isAdmin
-    if ("isAdmin" in req.body) {
-      user.isAdmin = req.body.isAdmin;
-    }
-
-    if (age) {
-      user.age = req.body.age;
-    }
-
-    if (experience) {
-      user.experience = req.body.experience;
-    }
-
-    res.status(200).json({ message: "Пользователь успешно обновлен" });
+    
+    User.findByIdAndUpdate(idParams, req.body)
+      .then((user) => User.findById(idParams))
+      .then((data) => {
+        res.status(200).json(data);
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err.message });
+      });
   }
 );
 
