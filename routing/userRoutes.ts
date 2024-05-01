@@ -80,15 +80,14 @@ router.put(
 
 router.delete("/users/:id", (req: Request<paramsType>, res: Response) => {
   const { id } = req.params;
-  const userIndex = users.findIndex((user) => user.id === id);
 
-  if (!userIndex) {
-    return res.status(404).json({ message: "Пользователь не найден" });
-  }
-
-  users.splice(userIndex, 1);
-
-  res.status(200).json({ message: "Пользователь успешно удален" });
+  User.findByIdAndDelete(id)
+    .then(() => {
+      res.status(200).json({ message: "Пользователь успешно удален" });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
 export default router;
