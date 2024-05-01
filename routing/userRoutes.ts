@@ -1,6 +1,4 @@
 import { Request, Response, Router } from "express";
-import crypto from "crypto";
-import { users } from "../mock";
 import { paramsType, userType } from "../models";
 import { User } from "../models/user.model";
 
