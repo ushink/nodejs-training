@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
-import { userType, users } from "./mock";
+import { users } from "./mock";
 import crypto from "crypto";
+import { paramsType, userType } from "./models";
 
 // import crypto = require("crypto");
 // const express = require('express')
@@ -40,6 +41,20 @@ app.post("/users", (req: Request<{}, {}, userType>, res: Response) => {
   users.push({ ...req.body, id: uniqId });
 
   res.status(200).json({ message: "Пользователь успешно добавлен" });
+});
+
+app.get("/users/:id", (req: Request<paramsType>, res: Response) => {
+  //получаем id пользователя из параметров запроса
+  const { id } = req.params;
+
+  //проверяем есть ли пользователь с таким id
+  const user = users.find((user) => user.id === id);
+
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).json({ message: "Пользователь не найден" });
+  }
 });
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);

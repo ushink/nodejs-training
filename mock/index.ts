@@ -1,10 +1,4 @@
-export type userType = {
-  id: string;
-  name: string;
-  age: number;
-  isAdmin: boolean;
-  experience: number;
-};
+import { userType } from "../models";
 
 export const users: userType[] = [
   {
