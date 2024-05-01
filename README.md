@@ -20,3 +20,6 @@
 "scripts": {
     "dev": "nodemon --exec ts-node index.ts"
 },
+
+6. npm install mongodb
+7. npm install mongoose --save
