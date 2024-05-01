@@ -58,10 +58,11 @@ app.get("/users/:id", (req: Request<paramsType>, res: Response) => {
 });
 
 app.put(
-  "users/:id",
+  "/users/:id",
   (req: Request<paramsType, {}, userType>, res: Response) => {
-    const { id } = req.params;
-    const user = users.find((user) => user.id === id);
+    const { id: idParams } = req.params;
+    const user = users.find((user) => user.id === idParams);
+
     const { name, isAdmin, age, experience } = req.body;
 
     if (!user) {
