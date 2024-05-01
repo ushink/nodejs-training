@@ -33,21 +33,20 @@ router.get("/users/:id", (req: Request<paramsType>, res: Response) => {
   //получаем id пользователя из параметров запроса
   const { id } = req.params;
 
-  //проверяем есть ли пользователь с таким id
-  const user = users.find((user) => user.id === id);
-
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(404).json({ message: "Пользователь не найден" });
-  }
+  User.findById(id)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
 });
 
 router.put(
   "/users/:id",
   (req: Request<paramsType, {}, userType>, res: Response) => {
     const { id: idParams } = req.params;
-    
+
     User.findByIdAndUpdate(idParams, req.body)
       .then((user) => User.findById(idParams))
       .then((data) => {
