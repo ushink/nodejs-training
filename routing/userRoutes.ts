@@ -10,7 +10,13 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.get("/users", (req: Request, res: Response) => {
-  res.send(users);
+  User.find()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
 });
 
 router.post("/users", (req: Request<{}, {}, userType>, res: Response) => {
