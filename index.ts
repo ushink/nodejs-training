@@ -1,9 +1,18 @@
 import express from "express";
+import userRouter from "./routing/userRoutes";
 
+// import crypto = require("crypto");
 // const express = require('express')
 
 const app = express();
 
-app.listen("3001", () => {
-  console.log("server is running");
+// для обработки post запросов
+app.use(express.json());
+
+app.use(userRouter);
+
+const port = 3001;
+
+app.listen(port, () => {
+  console.log(`server is running on port ${port}`);
 });
