@@ -91,6 +91,19 @@ app.put(
     res.status(200).json({ message: "Пользователь успешно обновлен" });
   }
 );
+
+app.delete("/users/:id", (req: Request<paramsType>, res: Response) => {
+  const { id } = req.params;
+  const userIndex = users.findIndex((user) => user.id === id);
+
+  if (!userIndex) {
+    return res.status(404).json({ message: "Пользователь не найден" });
+  }
+
+  users.splice(userIndex, 1);
+  
+  res.status(200).json({ message: "Пользователь успешно удален" });
+});
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
 });
