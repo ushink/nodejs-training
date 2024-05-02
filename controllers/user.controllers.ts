@@ -52,7 +52,10 @@ const deleteUser = (req: Request<paramsType>, res: Response) => {
   const { id } = req.params;
 
   User.findByIdAndDelete(id)
-    .then(() => {
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "User ID not found" });
+      }
       res.status(200).json({ message: "Пользователь успешно удален" });
     })
     .catch((err) => {
