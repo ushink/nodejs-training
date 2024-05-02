@@ -6,7 +6,11 @@ import {
   getUsers,
   updateUser,
 } from "../controllers/user.controllers";
-import { loginUser, registerUser } from "../controllers/auth.controller";
+import {
+  loginUser,
+  refreshToken,
+  registerUser,
+} from "../controllers/auth.controller";
 
 const router = Router();
 
@@ -17,6 +21,8 @@ router.post("/users", addUser);
 router.post("/register", registerUser);
 
 router.post("/login", loginUser);
+
+router.post("refreshToken", refreshToken);
 
 router.get("/users/:id", getUserById);
 

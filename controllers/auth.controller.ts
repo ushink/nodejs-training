@@ -55,4 +55,30 @@ const loginUser = (req: Request<{}, {}, userType>, res: Response) => {
     });
 };
 
-export { registerUser, loginUser };
+const refreshToken = (req: Request, res: Response) => {
+  const { refresh } = req.body;
+
+  if (!refresh) {
+    res.status(404).json({ message: "В теле не указан токен" });
+  }
+
+  jwt.verify(refresh, "jwt-refresh-token", (error: any, user: any) => {
+    if (error) {
+      return res.status(403).json({ message: "Неверный токен" });
+    }
+
+    const accessToken = jwt.sign({ email: user.email }, "jwt-access-token", {
+      expiresIn: "1m",
+    });
+    const refreshToken = jwt.sign({ email: user.email }, "jwt-refresh-token", {
+      expiresIn: "5m",
+    });
+
+    res.cookie("accessToken", accessToken, { maxAge: 60 * 1000 });
+    res.cookie("refreshToken", refreshToken, { maxAge: 5 * 60 * 1000 });
+
+    res.status(200).json({ accessToken });
+  });
+};
+
+export { registerUser, loginUser, refreshToken};
