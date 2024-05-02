@@ -1,6 +1,7 @@
 import express from "express";
 import userRouter from "./routing/userRoutes";
 import mongoose from "mongoose";
+import cors from "cors";
 
 // import crypto = require("crypto");
 // const express = require('express')
@@ -9,6 +10,8 @@ const app = express();
 
 // для обработки post запросов
 app.use(express.json());
+
+app.use(cors({ origin: "http://localhost:3000/", credentials: true })); //TODO добавить адрес приложения
 
 app.use(userRouter);
 

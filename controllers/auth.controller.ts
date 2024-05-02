@@ -4,11 +4,14 @@ import { User } from "../models/user.model";
 
 const registerUser = (req: Request<{}, {}, userType>, res: Response) => {
   // проверка на существование юзера с таким же email
-  User.findOne({ email: req.body.email }).then((user) => {
-    return res.status(403).json({ message: "User already registered" });
-  });
+  User.findOne({ email: req.body.email })
+    .then((userOne) => {
+      if (userOne) {
+        throw new Error(`User ${userOne} already registered`);
+      }
 
-  User.create(req.body)
+      return User.create(req.body);
+    })
     .then((data) => {
       res.status(200).json(data);
     })
