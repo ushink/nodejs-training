@@ -1,22 +1,14 @@
 import mongoose from "mongoose";
 
-// модель какие типы данных будут отправляться в бд 
+// модель какие типы данных будут отправляться в бд
 const UserSchema = new mongoose.Schema({
-  name: {
+  password: {
     type: String,
-    required: [true, "Enter username"], // обязательное поле
+    required: [true, "Enter password"], // обязательное поле
   },
-  age: {
+  email: {
     type: Number,
-    required: [true, "Enter age"],
-  },
-  isAdmin: {
-    type: Boolean,
-    required: [true, "Enter role"],
-  },
-  experience: {
-    type: Number,
-    required: [true, "Enter experience"],
+    required: [true, "Enter email"],
   },
 });
 
