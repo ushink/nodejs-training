@@ -6,12 +6,15 @@ import {
   getUsers,
   updateUser,
 } from "../controllers/user.controllers";
+import { registerUser } from "../controllers/auth.controller";
 
 const router = Router();
 
 router.get("/users", getUsers);
 
 router.post("/users", addUser);
+
+router.post("/register", registerUser);
 
 router.get("/users/:id", getUserById);
 
