@@ -29,3 +29,7 @@
 Для работы с auth
 8. npm i cors
 9. npm i --save-dev @types/cors
+
+Для токена
+10. npm i jsonwebtoken
+11. npm i --save-dev @types/jsonwebtoken

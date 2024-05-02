@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { userType } from "../models";
 import { User } from "../models/user.model";
+import jwt from "jsonwebtoken";
 
 const registerUser = (req: Request<{}, {}, userType>, res: Response) => {
   // проверка на существование юзера с таким же email
@@ -20,4 +21,38 @@ const registerUser = (req: Request<{}, {}, userType>, res: Response) => {
     });
 };
 
-export { registerUser };
+const loginUser = (req: Request<{}, {}, userType>, res: Response) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .then((userOne) => {
+      if (!userOne) {
+        return res
+          .status(404)
+          .json({ message: "Такого пользователя не существует" });
+      }
+      if (userOne.password !== password) {
+        return res.status(403).json({ message: "Пароли не совпадают" });
+      }
+
+      // принимает аргументы ({то что изменяет}, 'какое то сообщение', время жизни токена)
+      const accessToken = jwt.sign({ email }, "jwt-access-token", {
+        expiresIn: "1m",
+      });
+
+      const refreshToken = jwt.sign({ email }, "jwt-refresh-token", {
+        expiresIn: "5m",
+      });
+
+      // сохраняем токен в cookie
+      res.cookie("accessToken", accessToken, { maxAge: 60 * 1000 });
+      res.cookie("refreshToken", refreshToken, { maxAge: 5 * 60 * 1000 });
+
+      res.status(200).json({ accessToken, refreshToken });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
+};
+
+export { registerUser, loginUser };
